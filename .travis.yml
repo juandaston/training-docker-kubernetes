@@ -4,25 +4,25 @@ services:
   - docker
 
 before_install:
-  - docker build -f ./client/Dockerfile.dev -t client-test ./client
+  - docker build -t juandaston/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true client-test npm test
+  - docker run -e CI=true juandaston/react-test npm test
 
 after_success:
-  - docker build -t danielb/client ./client
-  - docker build -t danielb/nginx ./nginx
-  - docker build -t danielb/server ./server
-  - docker build -t danielb/worker ./worker
+  - docker build -t juandaston/client ./client
+  - docker build -t juandaston/nginx ./nginx
+  - docker build -t juandaston/server ./server
+  - docker build -t juandaston/worker ./worker
 
   # Log in to the docker CLIE
   - echo "$DOCKER_PASSWORD_NEA" | docker login -u "$DOCKER_ID_NEA" --password-stdin
 
   # Take those images and push them to docker hub
-  - docker push danielb/client
-  - docker push danielb/nginx
-  - docker push danielb/server
-  - docker push danielb/worker
+  - docker push juandaston/client
+  - docker push juandaston/nginx
+  - docker push juandaston/server
+  - docker push juandaston/worker
 
   deploy:
     edge: true
